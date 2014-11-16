@@ -1,6 +1,6 @@
 applications:
   src:
-   name: reciever
+   name: Airlift demo
    mem: 128M
    buildpack: https://github.com/ActiveState/stackato-buildpack-python
    services:
@@ -10,7 +10,7 @@ applications:
       type: rabbitmq3	  
    stackato:
     env:
-        QUEUE_NAME: hello
+        QUEUE_NAME: fibq
     min_version:
         client: 1.4.3
     hooks:

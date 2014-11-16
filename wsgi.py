@@ -44,8 +44,8 @@ messageDB = MessageDB(url,dbname,user,password)
 messageQueue = MessageQueue(rabbit_url, messageDB)
 messageQueue.getMessagesAsync(queue_name)
     
-@get('/received') 
-def getReceived():
+@get('/receive') 
+def getReceive():
     
     log.debug("handling /received path")
 
@@ -61,10 +61,36 @@ def getReceived():
 view routes
 '''
 
+@route('/send/<number>')
+def send(number=None):
+	if not number:
+		return template('Please add a number to the end of url: /send/5')
+	fib = F(int(number))
+	vcap_services = json.loads(os.environ['VCAP_SERVICES'])
+	srv = vcap_services['RABBITMQ_URL']
+	parameters = pika.URLParameters(srv['url'])
+	connection = pika.BlockingConnection(parameters)
+	channel = connection.channel()
+	 
+	channel.queue_declare(queue=queue_name)
+	 
+	channel.basic_publish(exchange='', routing_key='fibq', body=fib)
+	connection.close()
+	return template('Sent the Fibonacci number for {{number}}, {{fib}} in the fibq', number=number, fib=fib, srv=srv)
+
+def F(n):
+	if n == 0: return 0
+	elif n == 1: return 1
+	else: return F(n-1)+F(n-2)
+
 @route('/')
-def home():
-    log.debug("handling default / route")
-    return bottle.template('home')
+@route('/fib/<number>')
+def fib(number=None):
+	if not number:
+		return template('Please add a number to the end of url: /fib/5')
+	fib = F(int(number))
+	return template('The Fibonacci number for {{number}} is {{fib}}', number=number, fib=fib)
+
 
 @route('/static/:filename')
 def serve_static(filename):
@@ -78,10 +104,10 @@ log.debug("starting web server")
 application = bottle.app()
 application.catchall = False
 
-#if os.getenv('SELFHOST', False):
-#UNCOMMENT BEFORE RUNNING ON CLOUD
-url = os.getenv('VCAP_APP_HOST')
-port = int(os.getenv('VCAP_APP_PORT'))
+if os.getenv('SELFHOST', False):
+	#UNCOMMENT BEFORE RUNNING ON CLOUD
+	url = os.getenv('VCAP_APP_HOST')
+	port = int(os.getenv('VCAP_APP_PORT'))
 bottle.run(application, host=url, port=port)
 
 # this is the last line
