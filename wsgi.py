@@ -26,7 +26,7 @@ log.setLevel(logging.DEBUG)
 log.debug("setting up message queue and db connection...")
 
 mysql_url = urlparse.urlparse(os.environ['MYSQL_URL'])
-rabbit_url = os.environ['RABBIT_URL']
+rabbit_url = os.environ['RABBITMQ_URL']
 queue_name = os.environ['QUEUE_NAME']
 
 print os.environ['MYSQL_URL']
