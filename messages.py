@@ -187,9 +187,11 @@ class MessageQueue:
         connection = pika.BlockingConnection(parameters)
 
         channel = connection.channel()
-
-        channel.basic_consume(self.on_message, queue_name)
         try:
+            self.log.debug("kicking off channel creation...")
+            #I believe queue_declare will only create the queue if doesn't already exist.
+            channel.queue_declare(queue=queue_name)
+            channel.basic_consume(self.on_message, queue_name)
             self.log.debug("starting to consume messages...")
             channel.start_consuming()
         except Exception, err:
