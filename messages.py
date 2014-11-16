@@ -8,7 +8,7 @@ import json
 import pika
 import threading
 import logging
-
+import datetime
 
 logging.basicConfig()
 
@@ -36,6 +36,7 @@ class Message(object):
             self.message_id = row[0]
             self.sequence_id = row[1]
             self.sequence_value = row[2]
+            self.created_date = row[3]
         elif details != None:
             messageLogger.debug("initializing from JSON")
             self.message_id = -1
@@ -50,6 +51,10 @@ class Message(object):
             else:
                 messageLogger.error("invalid JSON format, sequence_value  not found")
                 raise 'invalid format'    
+            
+            # created is optional. It's always overwritten on insert to db.
+            if details.has_key('created_date'):
+                self.created_date = details['created_date']
     
     
     
@@ -82,8 +87,10 @@ class MessageDB(object):
     def addMessage(self,message):
         
         try:
-            self.log.debug("adding message into database with sequence_id = %d and sequence_value = %d"%(message.sequence_id,message.sequence_value))
-            query = 'insert into messages(sequence_id, sequence_value) values(%d,%d)'%(message.sequence_id, message.sequence_value)
+            #created_date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            created_date = unicode(datetime.datetime.now())
+            self.log.debug("adding message into database with sequence_id = %d and sequence_value = %d and created_date = '%s'"%(message.sequence_id,message.sequence_value,created_date))
+            query = "insert into messages(sequence_id, sequence_value,created_date) values(%d,%d,'%s')"%(message.sequence_id, message.sequence_value,created_date)
             cur = self.db.cursor()
             cur.execute(query)
             self.db.commit()
@@ -99,9 +106,9 @@ class MessageDB(object):
         self.log.debug("retrieving messages, limit = %d"%limit)
         try:
             if isDescending == True:
-                query = 'select message_id,sequence_id, sequence_value from messages order by message_id DESC'
+                query = 'select message_id,sequence_id, sequence_value,created_date from messages order by message_id DESC LIMIT %d'%limit
             else:
-                query = 'select message_id,sequence_id, sequence_value from messages order by message_id' # will order ASC because message_id is the primary key
+                query = 'select message_id,sequence_id, sequence_value,created_date from messages order by message_id LIMIT %d'%limit # will order ASC because message_id is the primary key
             
             cur = self.db.cursor()
             cur.execute(query)

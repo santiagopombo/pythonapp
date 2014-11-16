@@ -25,7 +25,7 @@ if __name__ == '__main__':
         dbName = mysql_url.path[1:] # slice off the '/'
         db = MySQLdb.connect(host=url,user=userName,passwd=password,db=dbName)
         
-        table_create = 'CREATE TABLE IF NOT EXISTS messages( message_id int not null auto_increment, sequence_id int not null, sequence_value bigint not null,PRIMARY KEY(message_id));'
+        table_create = 'CREATE TABLE IF NOT EXISTS messages( message_id int not null auto_increment, sequence_id int not null, sequence_value bigint not null, created_date varchar 100,PRIMARY KEY(message_id));'
         
         cur = db.cursor()
 

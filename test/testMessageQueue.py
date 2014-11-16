@@ -40,7 +40,7 @@ class Test(unittest.TestCase):
 #         rabbit_url = "amqps://arun:arun@10.8.50.235:5671/%2f"
 #         for i in range(0,5):
 #             self.pushMessage(rabbit_url,"hello")
-# 
+#  
 #         messageDB = initializeMessageDB()
 #         messageQ = initializeMessageQueue(rabbit_url,messageDB)
 #         messageQ.getMessagesAsync("hello")

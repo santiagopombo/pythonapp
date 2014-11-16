@@ -9,7 +9,7 @@ $(document).ready(function() {
 		var obj = $.parseJSON(data);
 		
 		$.each(obj, function() {
-			t.row.add([this['sequence_id'],this['sequence_value']]).draw();
+			t.row.add([this['sequence_id'],this['sequence_value'],this['created_date']]).draw();
 			});
 					
 	});

@@ -22,13 +22,15 @@
 		            <tr>
 		        	 	<th>sequence id</th>
 		                <th>sequence value</th>
+		                <th>date created</th>
 		            </tr>
 		        </thead>
 		 
 		        <tfoot>
 		            <tr>
 		                <th>sequence id</th>
-		                <th>sequence value</th>              
+		                <th>sequence value</th>
+		                <th>date created</th>              
 		            </tr>
 		        </tfoot>
 		 

@@ -6,9 +6,11 @@ applications:
    services:
     ${name}-db:
       type: mysql
+    ${name}-mq:
+      type: rabbitmq3	  
    stackato:
     env:
-        SOMEVAR: 1
+        QUEUE_NAME: hello
     min_version:
         client: 1.4.3
     hooks:
