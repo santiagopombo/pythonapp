@@ -1,5 +1,5 @@
 applications:
-  src:
+  .:
    name: reciever
    mem: 128M
    buildpack: https://github.com/ActiveState/stackato-buildpack-python
