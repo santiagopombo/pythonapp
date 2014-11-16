@@ -84,6 +84,9 @@ def F(n):
 	else: return F(n-1)+F(n-2)
 
 @route('/')
+def home():
+    return bottle.template('home')
+
 @route('/fib/<number>')
 def fib(number=None):
 	if not number:
