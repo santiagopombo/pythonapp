@@ -104,10 +104,18 @@ log.debug("starting web server")
 application = bottle.app()
 application.catchall = False
 
+"""
+#UNCOMMENT BELOW FOR RUNNING ON LOCALHOST
 if os.getenv('SELFHOST', False):
-	#UNCOMMENT BEFORE RUNNING ON CLOUD
-	url = os.getenv('VCAP_APP_HOST')
-	port = int(os.getenv('VCAP_APP_PORT'))
+
+url = os.getenv('VCAP_APP_HOST')
+port = int(os.getenv('VCAP_APP_PORT'))
 bottle.run(application, host=url, port=port)
+
+#UNCOMMENT BELOW FOR RUNNING ON HDP
+"""
+
+bottle.run(application, host='0.0.0.0', port=os.getenv('PORT', 8080))
+
 
 # this is the last line
