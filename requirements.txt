@@ -1,7 +1,3 @@
 bottle
 MySQL-python
-<<<<<<< HEAD
 pika
-=======
-pika
->>>>>>> FETCH_HEAD

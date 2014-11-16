@@ -30,7 +30,7 @@ rabbit_url = os.environ['RABBIT_URL']
 queue_name = os.environ['QUEUE_NAME']
 
 print os.environ['MYSQL_URL']
-print os.environ['RABBIT_URL']
+print os.environ['RABBITMQ_URL']
 
 #rdb = redis.Redis(host=url.hostname, port=url.port, password=url.password)
 

@@ -1,11 +1,6 @@
 applications:
-<<<<<<< HEAD
   .:
-   name: reciever
-=======
-  src:
    name: Airlift demo
->>>>>>> FETCH_HEAD
    mem: 128M
    buildpack: https://github.com/ActiveState/stackato-buildpack-python
    services:
