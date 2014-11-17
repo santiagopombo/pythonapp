@@ -44,7 +44,7 @@ def send():
 	if not number:
 		return template('Please add a number to the end of url: /send/5')
 	fib = F(int(number))
-	rabbit_url = os.environ['RABBITMQ_URL']
+	#rabbit_url = os.environ['RABBITMQ_URL']
 	parameters = pika.URLParameters(rabbit_url)
 	connection = pika.BlockingConnection(parameters)
 	channel = connection.channel() 
