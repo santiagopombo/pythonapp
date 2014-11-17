@@ -1,5 +1,4 @@
-receiver
-========
+
 
 HP PaaS RabbitMQ Sender - sample code that sets up a web server that sends messages to a rabbitMQ topic
 
@@ -27,4 +26,10 @@ where sequence_id maps to the id in the Fibonacci sequence, and sequence_value i
 
 
 
+
+=======
+sender
+======
+
+This is the sender for the HP Helion messaging demo
 
