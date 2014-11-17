@@ -12,6 +12,7 @@ import contextlib
 from messages import Message, MessageDB, MessageEncoder, MessageQueue
 
 from bottle import route, request,get, post, put, delete, response, template
+import  pika
 
 
 import json
@@ -19,43 +20,20 @@ import json
 STATIC_ROOT = os.path.join(os.path.dirname(__file__), 'static')
 
 logging.basicConfig()
-log = logging.getLogger('receiver')
+log = logging.getLogger('sender')
 log.setLevel(logging.DEBUG)
 
 
-log.debug("setting up message queue and db connection...")
+log.debug("setting up message queue")
 
-mysql_url = urlparse.urlparse(os.environ['MYSQL_URL'])
 rabbit_url = os.environ['RABBITMQ_URL']
 queue_name = os.environ['QUEUE_NAME']
 
-print os.environ['MYSQL_URL']
 print os.environ['RABBITMQ_URL']
 
 #rdb = redis.Redis(host=url.hostname, port=url.port, password=url.password)
 
-url = mysql_url.hostname
-password = mysql_url.password
-user = mysql_url.username
-dbname = mysql_url.path[1:] 
-
-
-messageDB = MessageDB(url,dbname,user,password)
-messageQueue = MessageQueue(rabbit_url, messageDB)
-messageQueue.getMessagesAsync(queue_name)
-    
-@get('/receive') 
-def getReceive():
-    
-    log.debug("handling /received path")
-
-#     new_messages = messageQueue.getMessages()
-#     
-#     messageDB.addMessages(new_messages)
-    
-    all_messages = messageDB.getMessages()
-    
-    return json.dumps(all_messages,cls=MessageEncoder)
+ 
 
 '''
 view routes
@@ -66,17 +44,17 @@ def send(number=None):
 	if not number:
 		return template('Please add a number to the end of url: /send/5')
 	fib = F(int(number))
-	vcap_services = json.loads(os.environ['VCAP_SERVICES'])
-	srv = vcap_services['RABBITMQ_URL']
-	parameters = pika.URLParameters(srv['url'])
+	rabbit_url = os.environ['RABBITMQ_URL']
+	parameters = pika.URLParameters(rabbit_url)
 	connection = pika.BlockingConnection(parameters)
-	channel = connection.channel()
-	 
+	channel = connection.channel() 
 	channel.queue_declare(queue=queue_name)
+
+	json_body = json.dumps({'sequence_id':number, 'sequence_value':fib})
 	 
-	channel.basic_publish(exchange='', routing_key='fibq', body=fib)
+	channel.basic_publish(exchange='', routing_key='fibq', body=json_body)
 	connection.close()
-	return template('Sent the Fibonacci number for {{number}}, {{fib}} in the fibq', number=number, fib=fib, srv=srv)
+	return template('Sent the Fibonacci number for {{number}}, {{fib}} in the fibq', number=number, fib=fib)
 
 def F(n):
 	if n == 0: return 0
@@ -85,7 +63,7 @@ def F(n):
 
 @route('/')
 def home():
-    return bottle.template('home')
+    return 'Hi there- use this microservice to send messages and generate fib numbers. Use /fib/<number> and /send/<number>'
 
 @route('/fib/<number>')
 def fib(number=None):

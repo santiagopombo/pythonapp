@@ -1,11 +1,9 @@
 applications:
   .:
-   name: receiver
+   name: sender
    mem: 128M
    buildpack: https://github.com/ActiveState/stackato-buildpack-python
    services:
-    ${name}-db:
-      type: mysql
     ${name}-mq:
       type: rabbitmq3	  
    stackato:
@@ -13,5 +11,3 @@ applications:
         QUEUE_NAME: fibq
     min_version:
         client: 1.4.3
-    hooks:
-        post-staging: python create_populate_db.py

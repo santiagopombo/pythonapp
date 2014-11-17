@@ -1,18 +1,17 @@
 receiver
 ========
 
-HP PaaS RabbitMQ Receiver - sample code that sets up a web server that receives messages from a rabbitMQ topic and serializes them to the database. 
+HP PaaS RabbitMQ Sender - sample code that sets up a web server that sends messages to a rabbitMQ topic
 
 required ENV variables: 
 
 these are supplied for you in HP Development Platform Application Lifecycle Service: 
 
-MYSQL_URL
 RABBIT_URL
 VCAP_APP_HOST
 VCAP_APP_PORT
 
-this one you need to fill out (make sure it is the same one that people are pushing messages to)
+this one you need to fill out (make sure it matches the one in receiver project)
 QUEUE_NAME
 
 
