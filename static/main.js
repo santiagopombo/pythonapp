@@ -3,18 +3,23 @@
 
         
 $(document).ready(function() {
-	var t = $('#messages').DataTable();
-	$.get('/received',function(data, status) {
-		console.log(data);
-		var obj = $.parseJSON(data);
+	$('#submit_button').click(function(e) {
+		if($("optionsRadios1").prop("checked")){
+			var url = "/send";
+		}
+		else{
+			var url = "/fib";
+		}
+		$.ajax({
+		  type: "POST",
+		  url: url,
+		  data: $("#gen_fib").val(),
+		  success: function(data){alert(data)}
+		});
+
 		
-		$.each(obj, function() {
-			t.row.add([this['sequence_id'],this['sequence_value'],this['created_date']]).draw();
-			});
-					
 	});
 	
-	console.log("ready")
 });
 
 

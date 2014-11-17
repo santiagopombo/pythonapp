@@ -4,7 +4,7 @@ applications:
    mem: 128M
    buildpack: https://github.com/ActiveState/stackato-buildpack-python
    services:
-    ${name}-mq:
+    airlift-mq:
       type: rabbitmq3	  
    stackato:
     env:

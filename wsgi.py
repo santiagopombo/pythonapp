@@ -38,9 +38,9 @@ print os.environ['RABBITMQ_URL']
 '''
 view routes
 '''
-
-@route('/send/<number>')
-def send(number=None):
+@post('/send') 
+def send():
+	number = request.query['number']
 	if not number:
 		return template('Please add a number to the end of url: /send/5')
 	fib = F(int(number))
@@ -54,7 +54,7 @@ def send(number=None):
 	 
 	channel.basic_publish(exchange='', routing_key='fibq', body=json_body)
 	connection.close()
-	return template('Sent the Fibonacci number for {{number}}, {{fib}} in the fibq', number=number, fib=fib)
+	return json_body
 
 def F(n):
 	if n == 0: return 0
@@ -63,14 +63,16 @@ def F(n):
 
 @route('/')
 def home():
-    return 'Hi there- use this microservice to send messages and generate fib numbers. Use /fib/<number> and /send/<number>'
+    return bottle.template('home', sent=False, body=None)
 
-@route('/fib/<number>')
-def fib(number=None):
+@post('/fib') 
+def fib():
+	number = request.query['number']
 	if not number:
 		return template('Please add a number to the end of url: /fib/5')
 	fib = F(int(number))
-	return template('The Fibonacci number for {{number}} is {{fib}}', number=number, fib=fib)
+	json_body = json.dumps({'sequence_id':number, 'sequence_value':fib})
+	return json_body
 
 
 @route('/static/:filename')
