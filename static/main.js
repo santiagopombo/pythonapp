@@ -4,7 +4,7 @@
         
 $(document).ready(function() {
 	$('#submit_button').click(function(e) {
-		if($("optionsRadios1").prop("checked")){
+		if($("#optionsRadios1").prop("checked")){
 			var url = "/send";
 		}
 		else{
