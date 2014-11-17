@@ -40,7 +40,7 @@ view routes
 '''
 @post('/send') 
 def send():
-	number = request.query['number']
+	number = request.json['number']
 	if not number:
 		return template('Please add a number to the end of url: /send/5')
 	fib = F(int(number))
@@ -67,7 +67,7 @@ def home():
 
 @post('/fib') 
 def fib():
-	number = request.query['number']
+	number = request.json['number']
 	if not number:
 		return template('Please add a number to the end of url: /fib/5')
 	fib = F(int(number))

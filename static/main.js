@@ -13,8 +13,13 @@ $(document).ready(function() {
 		$.ajax({
 		  type: "POST",
 		  url: url,
-		  data: $("#gen_fib").val(),
-		  success: function(data){alert(data)}
+		  data: JSON.stringify({"number": $("#gen_fib").val()}),
+		  contentType: "application/json",
+          dataType: "json",
+		  success: function(data){
+		  	console.log(data);
+		  	$("#result").html("<span>The number you sent was: "+$("#gen_fib").val()+ ". The returned value was: "+data.sequence_value+"</span>");
+		  }
 		});
 
 		

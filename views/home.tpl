@@ -39,7 +39,8 @@
 		    Calculate, send, then display
 		  </label>
 		</div>
-
+		<div id="result">
+		</div>
 		</div>
 
 	
