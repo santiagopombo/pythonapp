@@ -5,10 +5,10 @@
 $(document).ready(function() {
 	$('#submit_button').click(function(e) {
 		if($("#optionsRadios1").prop("checked")){
-			var url = "/send";
+			var url = "/fib";
 		}
 		else{
-			var url = "/fib";
+			var url = "/send";
 		}
 		$.ajax({
 		  type: "POST",
