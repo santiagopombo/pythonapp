@@ -13,7 +13,7 @@
   <body>
  	
 	    
-	    <h1>Fibonacci Calculato- Demor</h1>
+	    <h1>Fibonacci Calculato- Demo</h1>
 	    
 	    <br/>
 	   
