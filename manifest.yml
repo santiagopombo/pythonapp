@@ -1,6 +1,6 @@
 applications:
   .:
-   name: sender_CI_DEMO
+   name: CIDEMO
    mem: 128M
    buildpack: https://github.com/ActiveState/stackato-buildpack-python
    services:
